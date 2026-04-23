@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rag-chatbot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.12",
+    "faiss-cpu>=1.8",
+    "numpy>=1.26",
+    "requests>=2.31",
+    "sentence-transformers>=3.0",
+    "streamlit>=1.39",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.uv.workspace]
+members = [
+    "rag-chatbot-main",
+]
