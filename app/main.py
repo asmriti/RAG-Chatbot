@@ -25,7 +25,7 @@ def load_vectordb():
     return db
 
 
-st.title("Local RAG Chatbot 🤖 (Ollama Powered)")
+st.title("Local RAG Chatbot 🤖")
 
 vectordb = load_vectordb()
 

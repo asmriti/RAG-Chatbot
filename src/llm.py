@@ -1,6 +1,19 @@
-import requests
+import os
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+import google.generativeai as genai
+
+def _api_key() -> str:
+    key = os.getenv("GEMINI_API_KEY")
+    if not key:
+        raise RuntimeError(
+            "GEMINI_API_KEY is not set. Export it in your shell, or define it in your "
+            "environment before starting the app (e.g. `export GEMINI_API_KEY=...`)."
+        )
+    return key
+
+
+genai.configure(api_key=_api_key())
+_MODEL = genai.GenerativeModel("gemini-2.5-flash")
 
 def generate_answer(query, context):
     prompt = f"""
@@ -17,18 +30,12 @@ def generate_answer(query, context):
 
 ### Answer:
 """
-
-    response = requests.post(
-        OLLAMA_URL,
-        json={
-            "model": "qwen3.5:latest",
-            "prompt": prompt,
-            "stream": False,
-            "options": {
-                "temperature": 0.2,
-                "num_predict": 300
-            }
-        }
+    response = _MODEL.generate_content(
+        prompt,
+        generation_config={
+            "temperature": 0.2,
+            "max_output_tokens": 300,
+        },
     )
 
-    return response.json()["response"]
+    return response.text
