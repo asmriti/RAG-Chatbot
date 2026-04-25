@@ -2,8 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def scrape_page(url):
-    response = requests.get(url)
+def scrape_page(url, timeout=30):
+    response = requests.get(url, timeout=timeout)
+    response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
 
     paragraphs = [p.get_text() for p in soup.find_all("p")]
